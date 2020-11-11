@@ -1,4 +1,5 @@
 from ReferenceScope import ReferenceScope as Reference
+from ReferenceScope import ReferenceConnection as Connection
 from swiftkeywords import *
 import re
 
@@ -104,3 +105,23 @@ def gatherClasses(symbols):
                     lastSymbol = symbols[num + 3 + inhiritanceCount]
 
     return classes
+
+## Return an array with classes externals calls
+def gatherConnections(classes):
+
+    connections = []
+
+    for cl1_key in classes:
+        cl1 = classes[cl1_key]
+
+        for cl2_key in classes:
+            cl2 = classes[cl2_key]
+
+            # Check if cl1 calls cl2
+            if cl1.checkExternalReference(cl2):
+                conn = Connection()
+                conn.caller = cl1
+                conn.called = cl2
+                connections.append(conn)
+
+    return connections
