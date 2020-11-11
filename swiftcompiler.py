@@ -155,3 +155,15 @@ def gatherConnections(classes):
                 connections.append(conn)
 
     return connections
+
+## Computes the counting for called classes
+def extractCalledRanking(connections):
+        ranking = {}
+
+        for conn in connections:
+            if conn.called in ranking:
+                ranking[conn.called] += 1
+            else:
+                ranking[conn.called] = 1
+
+        return ranking

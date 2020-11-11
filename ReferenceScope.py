@@ -34,7 +34,7 @@ class ReferenceScope:
         for attr in self.atributes:
             if attr.inheritances[0] == otherClass.name:
                 return True
-        
+
         # function attributes
         for func in self.functions:
             for attr in func.atributes:
