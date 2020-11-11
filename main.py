@@ -1,6 +1,7 @@
 from swiftcompiler import gatherSymbols, gatherClasses, gatherConnections, extractCalledRanking
 
-symbols = gatherSymbols("project_examples/case1/Duck.swift")
+symbols = gatherSymbols("project_examples/case1/Commented.swift")
+print(symbols)
 classes = gatherClasses(symbols)
 connections = gatherConnections(classes)
 

@@ -22,9 +22,15 @@ def gatherSymbols(path):
     with open(path) as f:
         fileText = f.read()
 
+        # Adding a \n for removing last line that is commented
+        fileText += "\n"
+
         # Removing content from static strings
         fileText = re.sub('\".*\"', '\'\'', fileText)
         fileText = re.sub('\'.*\'', '\'\'', fileText)
+
+        # Removing simple comments
+        fileText = re.sub('/.*\n', '', fileText)
 
         symbols = []
 
