@@ -14,13 +14,12 @@ class Duck: Animal, OtherAnimals {
         print(self.hi)
     }
 
-    func sayOther(other: Other) {
-        print(other.some)
-    }
 }
 
 class OtherAnimals {
-
+    func sayOther(other: Other) {
+        print(other.some)
+    }
 }
 
 class Animal {

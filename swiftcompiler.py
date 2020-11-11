@@ -71,9 +71,39 @@ def gatherClasses(symbols):
         # check Function
         if sym == FUNC:
             funcName = symbols[num + 1]
+            currentScope = scopeStack[-1]
+            if currentScope in classes:
+                currentClass = classes[currentScope]
 
-            if scopeStack[-1] in classes:
-                classes[scopeStack[-1]].functions.append(funcName)
+                function = Reference()
+                function.rtype = FUNC
+                function.name = funcName
+                
+                ## check parameters
+                initParams = -1
+                endParams = -1
+                paramsCounter = 1
+                while initParams == -1:
+                    paramsCounter += 1
+                    if symbols[num + paramsCounter] == '(':
+                        # begin param check
+                        initParams = num + paramsCounter
+                    
+                while endParams == -1:
+                    paramsCounter += 1
+                    if symbols[num + paramsCounter] == ')':
+                        # ending param check
+                        endParams = num + paramsCounter
+                    elif symbols[num + paramsCounter + 1] == ':':
+                        newParam = Reference()
+                        newParam.rType = ATTRIBUTE
+                        newParam.name = symbols[num + paramsCounter]
+                        newParam.inheritances.append(symbols[num + paramsCounter + 2])
+                        # adding param
+                        function.atributes.append(newParam)
+
+                ## check atributes
+                currentClass.functions.append(function)
 
             scopeStack.append(funcName)
 
