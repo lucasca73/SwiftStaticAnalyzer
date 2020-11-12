@@ -1,5 +1,6 @@
 
 ATTRIBUTE = "attribute"
+UNKNOWN = "unknown"
 
 ## Key words
 ENUM = "enum"

@@ -1,6 +1,6 @@
-class Other {
-    var some: String = "Hi There!"
-}
+// class Other {
+//     var some: String = "Hi There!"
+// }
 
 class Duck: Animal, OtherAnimals {
     var hi: String = "Quack!"

@@ -1,8 +1,9 @@
-from swiftcompiler import gatherSymbols, gatherClasses, gatherConnections, extractCalledRanking
+from swiftcompiler import gatherSymbols, gatherClasses, gatherConnections, extractCalledRanking, gatherNotDeclared
 
-symbols = gatherSymbols("project_examples/case1/Commented.swift")
+symbols = gatherSymbols("project_examples/case1/Duck.swift")
 print(symbols)
 classes = gatherClasses(symbols)
+classes = gatherNotDeclared(classes)
 connections = gatherConnections(classes)
 
 ranking = extractCalledRanking(connections)

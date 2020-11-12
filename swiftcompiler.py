@@ -142,6 +142,42 @@ def gatherClasses(symbols):
 
     return classes
 
+def gatherNotDeclared(classes):
+
+    for cl in classes:
+        objClass = classes[cl]
+
+        # check in inheritances
+        for inheritance in objClass.inheritances:
+            if not inheritance in classes:
+                notDeclaredClass = Reference()
+                notDeclaredClass.name = inheritance
+                notDeclaredClass.rtype = UNKNOWN
+                classes[inheritance] = notDeclaredClass
+        
+        # check in attributes
+        for atr in objClass.atributes:
+            someType = atr.inheritances[0]
+
+            if not someType in classes:
+                notDeclaredClass = Reference()
+                notDeclaredClass.name = someType
+                notDeclaredClass.rtype = UNKNOWN
+                classes[someType] = notDeclaredClass
+
+        # check in functions
+        for functions in objClass.functions:
+            for atr in functions.atributes:
+                someType = atr.inheritances[0]
+                if not someType in classes:
+                    notDeclaredClass = Reference()
+                    notDeclaredClass.name = someType
+                    notDeclaredClass.rtype = UNKNOWN
+                    classes[someType] = notDeclaredClass
+
+        return classes
+        
+
 ## Return an array with classes externals calls
 def gatherConnections(classes):
 

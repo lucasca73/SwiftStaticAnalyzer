@@ -6,7 +6,6 @@ class ReferenceScope:
         self.inheritances = []
         self.atributes = []
         self.functions = []
-        self.parameters = []
     
     ## Prints out the class information
     def describe(self, prefix=""):
