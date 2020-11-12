@@ -13,7 +13,6 @@ class Duck: Animal, OtherAnimals {
     func helloWorld() {
         print(self.hi)
     }
-
 }
 
 class OtherAnimals {

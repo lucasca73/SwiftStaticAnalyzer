@@ -39,6 +39,10 @@ class ReferenceScope:
             for attr in func.atributes:
                 if attr.inheritances[0] == otherClass.name:
                     return True
+
+        for inheritance in self.inheritances:
+            if inheritance == otherClass.name:
+                return True
         
         return False
 

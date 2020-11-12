@@ -1,24 +1,72 @@
 from swiftcompiler import gatherSymbols, gatherClasses, gatherConnections, extractCalledRanking, gatherNotDeclared
+from os import walk
 
-symbols = gatherSymbols("project_examples/case1/Duck.swift")
-print(symbols)
-classes = gatherClasses(symbols)
-classes = gatherNotDeclared(classes)
-connections = gatherConnections(classes)
 
-ranking = extractCalledRanking(connections)
+def readFile(file):
+    symbols = gatherSymbols("project_examples/Duck.swift")
 
-for name in classes:
-    classes[name].describe()
+    classes = gatherClasses(symbols)
+    classes = gatherNotDeclared(classes)
+    connections = gatherConnections(classes)
 
-for conn in connections:
-    conn.describe()
+    ranking = extractCalledRanking(connections)
 
-print("\nCounting external references")
-i = 0
-for called in ranking:
-    i += 1
-    print("{} - {}:{}".format(i, called.name, ranking[called]))
+    for name in classes:
+        classes[name].describe()
 
-# End of program
-print("\n")
+    for conn in connections:
+        conn.describe()
+
+    print("\nCounting external references")
+    i = 0
+    for called in ranking:
+        i += 1
+        print("{} - {}:{}".format(i, called.name, ranking[called]))
+
+    # End of program
+    print("\n")
+
+def readDir(base_path, files = []):
+    for (dirpath, _, filenames) in walk(base_path):
+        for fname in filenames:
+            path = dirpath.replace("\\","/")
+            files.append(path + "/" + fname)
+
+def readFiles(files_path):
+
+    classes = {}
+
+    for path in files_path:
+        symbols = gatherSymbols(path)
+        newClasses = gatherClasses(symbols)
+        for cl in newClasses:
+            classes[cl] = newClasses[cl]
+    
+    classes = gatherNotDeclared(classes)
+    connections = gatherConnections(classes)
+
+    ranking = extractCalledRanking(connections)
+
+    for name in classes:
+        classes[name].describe()
+
+    for conn in connections:
+        conn.describe()
+
+    print("\nCounting external references")
+    i = 0
+    for called in ranking:
+        i += 1
+        print("{} - {}:{}".format(i, called.name, ranking[called]))
+
+    # End of program
+    print("\n")
+
+
+## MAIN 
+files = []
+readDir("project_examples/multiple_files", files)
+print("Reading files")
+print(files)
+
+readFiles(files)

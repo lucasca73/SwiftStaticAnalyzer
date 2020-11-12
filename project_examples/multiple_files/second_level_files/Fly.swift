@@ -1,0 +1,5 @@
+class Fly {
+    func fly() {
+        
+    }
+}
