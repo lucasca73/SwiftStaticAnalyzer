@@ -32,6 +32,10 @@ def gatherSymbols(path):
         # Removing simple comments
         fileText = re.sub('/.*\n', '', fileText)
 
+        # Removing null handling keyword
+        fileText = re.sub('\?', '', fileText)
+        fileText = re.sub('\!', '', fileText)
+
         symbols = []
 
         spacesSplitted = fileText.split(' ')
