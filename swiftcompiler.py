@@ -118,7 +118,7 @@ def gatherClasses(symbols):
             scopeStack.append(funcName)
 
         # Check Class
-        if sym == CLASS:
+        if sym == CLASS or sym == PROTOCOL or sym == STRUCT or sym == ENUM:
             className = symbols[num + 1]
             classObj = {}
 
@@ -127,7 +127,7 @@ def gatherClasses(symbols):
             # Creating class
             if not className in classes:
                 someClass = Reference()
-                someClass.rtype = CLASS
+                someClass.rtype = sym
                 someClass.name = className
                 classes[className] = someClass
                 classObj = someClass
