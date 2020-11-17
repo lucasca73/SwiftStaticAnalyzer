@@ -1,6 +1,7 @@
 protocol FriendsProtocol {
     func askForHelp() -> Bool
     func wannaHangout() -> Bool
+    func meets() -> Bool
 }
 
 extension FriendsProtocol {
@@ -11,9 +12,9 @@ class FriendCircle<Friend: FriendsProtocol> {
     var people = [Friend]()
 
     func callForHelp() {
-        for p in people {
-            p.askForHelp()
-        }
+        // for p in people {
+        //     p.askForHelp()
+        // }
     }
 }
 

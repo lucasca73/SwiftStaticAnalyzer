@@ -46,7 +46,7 @@ def gatherSymbols(path):
                     symbols.append(breaks)
 
         # separating symbols from words
-        for separator in ['.', ':', '(', ')', '{', '}', ',', '[', ']']:
+        for separator in ['.', ':', '(', ')', '{', '}', ',', '[', ']', '<', '>', '=']:
             symbols = separateSymbol(symbols, separator)
 
         return symbols
@@ -59,11 +59,38 @@ def gatherClasses(symbols):
     # Classes dictionary mapping
     classes = {}
     scopeStack = []
+    scopeDeclaration = False
 
     for num, sym in enumerate(symbols, start=0):
 
+        print(sym)
+
+        if sym == "{":
+            scopeDeclaration = False
+
         if sym == "}":
             scopeStack.pop()
+
+        if sym == '<':
+            if scopeDeclaration:
+                refName = scopeStack[-1]
+                ref = classes[refName]
+
+                # Read generic declaration for class
+                if ref.rtype == CLASS:
+                    count = 1
+                    lastSym = symbols[num + count]
+                    while lastSym != ">":
+                        # next
+                        if symbols[num + count + 1] == ":":
+                            generic = Reference()
+                            generic.rtype = GENERICS
+                            generic.name = lastSym
+                            generic.inheritances.append(symbols[num + count + 2])
+                            ref.generics.append(generic)
+                        
+                        count += 1
+                        lastSym = symbols[num + count]
 
         # check Variable
         if sym == LET or sym == VAR:
@@ -82,6 +109,7 @@ def gatherClasses(symbols):
         if sym == FUNC:
             funcName = symbols[num + 1]
             currentScope = scopeStack[-1]
+
             if currentScope in classes:
                 currentClass = classes[currentScope]
 
@@ -115,14 +143,20 @@ def gatherClasses(symbols):
                 ## check atributes
                 currentClass.functions.append(function)
 
-            scopeStack.append(funcName)
+            # discard scope reading on func protocols
+            if currentClass.rtype != PROTOCOL:
+                # Begin scope declaration
+                scopeDeclaration = True
+                scopeStack.append(funcName)
 
         # Check Class
-        if sym == CLASS or sym == PROTOCOL or sym == STRUCT or sym == ENUM:
+        if sym == CLASS or sym == PROTOCOL or sym == STRUCT or sym == ENUM or sym == EXTENSION:
+
             className = symbols[num + 1]
             classObj = {}
 
             scopeStack.append(className)
+            scopeDeclaration = True
 
             # Creating class
             if not className in classes:

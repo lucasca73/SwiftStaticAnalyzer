@@ -66,7 +66,4 @@ def readFiles(files_path):
 ## MAIN 
 files = []
 readDir("project_examples/generic", files)
-print("Reading files")
-print(files)
-
 readFiles(files)

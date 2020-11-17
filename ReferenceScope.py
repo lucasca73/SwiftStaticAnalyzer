@@ -6,6 +6,7 @@ class ReferenceScope:
         self.inheritances = []
         self.atributes = []
         self.functions = []
+        self.generics = []
     
     ## Prints out the class information
     def describe(self, prefix=""):
@@ -16,13 +17,23 @@ class ReferenceScope:
             attributesNames += "{}    {}: {}\n".format(prefix, atr.name, atr.inheritances[0])
 
         print("\n{}{} {}".format(prefix, self.rtype, self.name))
-        print("{}* inheritances: {}".format(prefix, self.inheritances))
+
+        if len(self.inheritances) > 0:
+            print("{}* inheritances: {}".format(prefix, self.inheritances))
+
         if len(attributesNames) > 0:
             separator = "\n"
-        print("{}* attributes: {}{}".format(prefix, separator, attributesNames))
-        print("{}* functions:".format(prefix))
-        for func in self.functions:
-            func.describe(prefix + '\t')
+            print("{}* attributes: {}{}".format(prefix, separator, attributesNames))
+
+        if len(self.functions) > 0:
+            print("{}* functions:".format(prefix))
+            for func in self.functions:
+                func.describe(prefix + '\t')
+
+        if len(self.generics) > 0:
+            print("{}* generics:".format(prefix))
+            for gen in self.generics:
+                gen.describe(prefix + '\t')
 
         print("{}.".format(prefix))
 
@@ -42,6 +53,10 @@ class ReferenceScope:
 
         for inheritance in self.inheritances:
             if inheritance == otherClass.name:
+                return True
+
+        for gen in self.generics:
+            if gen.inheritances[0] == otherClass.name:
                 return True
         
         return False
